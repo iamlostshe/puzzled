@@ -1,0 +1,15 @@
+# Python
+__pycache__
+venv
+
+# Logs
+*.log
+
+# IDE
+.vscode
+.idea
+
+# Project
+storage
+export
+# db
