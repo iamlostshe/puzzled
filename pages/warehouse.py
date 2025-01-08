@@ -3,6 +3,10 @@
 import flet as ft
 
 
+# TODO def edit_warehouse_page(page: ft.Page) -> ft.SafeArea:
+    # return ft.SafeArea(
+        # )
+
 def warehouse_page(page: ft.Page) -> ft.SafeArea:
     'Страница работы со складом'
 

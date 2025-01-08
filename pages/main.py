@@ -138,7 +138,23 @@ def edit_main_page(page: ft.Page) -> None:
     }
 
     # Кнопка подтверждения отправки данных
-    submit = ft.CupertinoFilledButton("Продолжить", on_click=lambda e: submit_form(e, page))
+    submit = ft.CupertinoFilledButton(
+        "Продолжить",
+        width=page.width,
+        on_click=lambda e: submit_form(e, page)
+    )
+
+    def back(page: ft.Page) -> None:
+        'Кнопка "Назад"'
+
+        # Очищаем страницу
+        page.clean()
+
+        # Добавляем навигационное меню
+        page.add(nav_bar(page, 0))
+
+        # Открываем страницу клиента
+        page.add(main_page(page))
 
     # Возвращаем страницу
     return ft.SafeArea(
@@ -147,6 +163,12 @@ def edit_main_page(page: ft.Page) -> None:
             alignment=ft.MainAxisAlignment.CENTER,
             width=page.width,
             controls=[
+                ft.CupertinoFilledButton(
+                    'Назад',
+                    width=page.width,
+                    icon=ft.Icons.ARROW_BACK_IOS_NEW,
+                    on_click=lambda e: back(page)
+                ),
                 ft.Text(
                     value='Фанерный лист'
                 ),

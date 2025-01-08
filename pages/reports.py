@@ -90,13 +90,34 @@ def edit_reports_page(page: ft.Page) -> ft.SafeArea:
         ],
     )
 
-    button = ft.CupertinoFilledButton(text='Продолжить', on_click=lambda e: button_on_click(e, page))
+    button = ft.CupertinoFilledButton(
+        text='Продолжить',
+        width=page.width,
+        on_click=lambda e: button_on_click(e, page)
+    )
+
+    def back(page: ft.Page) -> None:
+        'Кнопка "Назад"'
+
+        # Очищаем страницу
+        page.clean()
+
+        # Добавляем навигационное меню
+        page.add(nav_bar(page, 3))
+
+        # Открываем страницу клиента
+        page.add(reports_page(page))
 
     return ft.SafeArea(
         ft.Column(
             width=page.width,
-
             controls=[
+                ft.CupertinoFilledButton(
+                    'Назад',
+                    width=page.width,
+                    icon=ft.Icons.ARROW_BACK_IOS_NEW,
+                    on_click=lambda e: back(page)
+                ),
                 choice_of_report,
                 choice_of_format,
                 button

@@ -157,8 +157,8 @@ def edit_sells_page(page: ft.Page) -> ft.SafeArea:
             # Добавляем навигационное меню
             page.add(nav_bar(page, 1))
 
-            # Открываем страницу клиента
-            page.add(client_page(page))
+            # Открываем страницу продаж
+            page.add(sells_page(page))
         
         # В ином случае выводим предупреждение
         else:
@@ -171,10 +171,28 @@ def edit_sells_page(page: ft.Page) -> ft.SafeArea:
         width=page.width, on_click=button_on_click
     )
 
+    def back(page: ft.Page) -> None:
+        'Кнопка "Назад"'
+
+        # Очищаем страницу
+        page.clean()
+
+        # Добавляем навигационное меню
+        page.add(nav_bar(page, 1))
+
+        # Открываем страницу клиента
+        page.add(sells_page(page))
+
     return ft.SafeArea(
         ft.Column(
             width=page.width,
             controls=[
+                ft.CupertinoFilledButton(
+                    'Назад',
+                    width=page.width,
+                    icon=ft.Icons.ARROW_BACK_IOS_NEW,
+                    on_click=lambda e: back(page)
+                ),
                 choice_of_status,
                 date_reg_button,
                 clients,
@@ -186,10 +204,10 @@ def edit_sells_page(page: ft.Page) -> ft.SafeArea:
     )
 
 
-def clients_page(page: ft.Page) -> None:
+def sells_page(page: ft.Page) -> None:
     'Страница работы с заказами'
 
-    def clients_page_on_click(e, page: ft.Page) -> None:
+    def sells_page_on_click(e, page: ft.Page) -> None:
         'Нажатие на кнопку "+"'
 
         # Очищаем страницу
@@ -201,7 +219,7 @@ def clients_page(page: ft.Page) -> None:
         # Добавляем страницу создания пазлов
         page.add(edit_sells_page(page))
 
-    plus_button = ft.FloatingActionButton(icon=ft.Icons.ADD, on_click=lambda e: clients_page_on_click(e, page))
+    plus_button = ft.FloatingActionButton(icon=ft.Icons.ADD, on_click=lambda e: sells_page_on_click(e, page))
 
     def get_items() -> list:
         'Собирет все заказы во едино'

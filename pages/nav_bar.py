@@ -41,7 +41,7 @@ def nav_bar_on_change(e, page: ft.Page):
     'Запускается при изменении навигационного меню'
 
     from pages.main import main_page
-    from pages.sells import clients_page
+    from pages.sells import sells_page
     from pages.warehouse import warehouse_page
     from pages.reports import reports_page
 
@@ -59,9 +59,9 @@ def nav_bar_on_change(e, page: ft.Page):
     if num == 0:
         page.add(main_page(page))
 
-    # Работа с клиентами
+    # Заказы
     elif num == 1:
-        page.add(clients_page(page))
+        page.add(sells_page(page))
 
     # Склад
     elif num == 2:
