@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "puzzled"
+version = "0.0.2"
+description = "Небольшой олимпиадный проект для работы магазина пазлов."
+authors = ["Ivan Melcikov"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+flet = "0.25.2"
+loguru = "0.7.3"
+
+[tool.ruff]
+select = ["ALL"]
+ignore = []
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
