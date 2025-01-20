@@ -101,6 +101,26 @@ poetry install
 Или через `requirements.txt`
 </summary>
 
+Создаём виртуальное окружение:
+
+``` bash
+python3 -m venv venv
+```
+
+Активируем виртуальное окружение:
+
+``` bash
+. venv/bin/activate
+```
+
+> Последняя команда для Windows:
+>
+> ``` bash
+> venv\Scripts\activate
+> ```
+
+Устанавливаем зависимости:
+
 ``` bash
 pip3 install -r requirements.txt
 ```
@@ -109,6 +129,17 @@ pip3 install -r requirements.txt
 
 3. Запускаем проект:
 
+``` bash
+poetry run python -m main
 ```
+
+<details>
+<summary>
+Если установка была через `requirements.txt`
+</summary>
+
+``` bash
 python3 main.py
 ```
+
+</details>

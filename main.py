@@ -1,27 +1,25 @@
-'Модуль для запуска приложения'
+"""Модуль для запуска приложения."""
 
 import flet as ft
 from loguru import logger
 
-from pages.nav_bar import nav_bar
-from pages.main import main_page
-
-from utils import db
 from config import FONT_PATH
+from pages.main import main_page
+from pages.nav_bar import nav_bar
+from utils import db
 
 
-def main(page: ft.Page):
-    'Функция для запуска приложения'
-
+def main(page: ft.Page) -> None:
+    """Функция для запуска приложения."""
     # Проверяем наличае JSON базы данных
     db.check_db()
 
     # Подключаем файл для логов
-    logger.add('log.log')
+    logger.add("log.log")
 
     # Подключаем шрифт из файла
     page.fonts = {
-        'Hack': FONT_PATH
+        "Hack": FONT_PATH,
     }
     page.theme = ft.Theme(font_family="Hack")
 

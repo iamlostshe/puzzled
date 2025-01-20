@@ -1,22 +1,24 @@
-# Reports (Отчёты)
-REPORT_DIR = 'export'
-REPORT_SEP = '_'
-REPORT_NAME_TXT = '<data-time>'
-REPORT_NAME_JSON = '<data-time>'
+"""Файл конфигурации."""
 
-REPORT_DB_NAME = 'db/reports.json'
+# Reports - Отчёты
+REPORT_DIR = "export"
+REPORT_SEP = "_"
+REPORT_NAME_TXT = "<data-time>"
+REPORT_NAME_JSON = "<data-time>"
 
-# Main (Пазлы)
-PUZZLES_DB_NAME = 'db/index.json'
+REPORT_DB_NAME = "db/reports.json"
 
-# Clients (Клиенты)
-CLIENTS_DB_NAME = 'db/clients.json'
+# Main - Пазлы
+PUZZLES_DB_NAME = "db/index.json"
 
-# Price (Цены)
-PRICE_LIST_DB_NAME = 'db/price_list.json'
+# Clients - Клиенты
+CLIENTS_DB_NAME = "db/clients.json"
 
-# Sells (Продажи)
-SELLS_DB_NAME = 'db/sells.json'
+# Price - Цены
+PRICE_LIST_DB_NAME = "db/price_list.json"
+
+# Sells - Продажи
+SELLS_DB_NAME = "db/sells.json"
 
 # Другое
-FONT_PATH = 'res/Hack-Regular.ttf'
+FONT_PATH = "res/Hack-Regular.ttf"

@@ -13,7 +13,16 @@ loguru = "0.7.3"
 
 [tool.ruff]
 select = ["ALL"]
-ignore = []
+ignore = [
+    # Кирилица
+    "RUF001", "RUF002", "RUF003",
+    # Магические значения
+    "PLR2004",
+    # TODO
+    "TD002", "TD003", "TD004", "FIX002",
+    # Другое
+    "INP001"
+]
 
 
 [build-system]
