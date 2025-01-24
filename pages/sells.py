@@ -71,11 +71,11 @@ def edit_sells_page(page: ft.Page) -> ft.SafeArea:
 
     def date_reg_change(e: ft.core.control_event.ControlEvent) -> None:
         """Отслеживание изменения времени."""
-        data["date_reg"] = e.control.value
+        data["date_reg"] = e.control.value.strftime("%d-%m-%Y %H:%M:%S")
 
     def date_ready_change(e: ft.core.control_event.ControlEvent) -> None:
         """Отслеживание изменения времени."""
-        data["date_ready"] = e.control.value
+        data["date_ready"] = e.control.value.strftime("%d-%m-%Y %H:%M:%S")
 
     date_reg_button = ft.ElevatedButton(
         "Выберите дату регистрации заказа",
@@ -105,9 +105,8 @@ def edit_sells_page(page: ft.Page) -> ft.SafeArea:
     )
 
     def choice_of_client_on_click(e: ft.core.control_event.ControlEvent) -> None:
-        """."""
-        logger.debug(e.control.value)
-        logger.debug(e.control)
+        """Запоминает выбор клиента."""
+        data["client"] = e.control.value
 
     def get_clients() -> list:
         """Создает список клиентов из бд в удобном формате."""
@@ -130,17 +129,17 @@ def edit_sells_page(page: ft.Page) -> ft.SafeArea:
         options=get_clients(),
     )
 
-    def button_on_click() -> None:
+    def button_on_click(e: ft.core.control_event.ControlEvent) -> None:  # noqa: ARG001
         """Нажатие на кнопку 'Продолжить'."""
         # Получаем количество непустых полей в data
-        len_data = 0
-
-        len_data = len([1 for i in data.items() if i != ""])
+        len_data = len([1 for i in data.values() if i != ""])
+        logger.debug(data)
 
         # Проверяем целостность data
-        if len_data >= 8:
-            # TODO Записываем data в бд
-            # db.
+        if len_data >= 6:
+            # Записываем data в бд
+            s = db.Sells()
+            s.add(data)
 
             # Очищаем страницу
             page.clean()
@@ -162,6 +161,28 @@ def edit_sells_page(page: ft.Page) -> ft.SafeArea:
         expand=True,
         width=page.width,
         on_click=button_on_click,
+    )
+
+    def change_number(e: ft.core.control_event.ControlEvent) -> None:
+        """Меняет количество товаров в data."""
+        num = e.control.value
+        logger.debug(num)
+        logger.debug(not num)
+        logger.debug(not num.isdigit())
+
+        if not num:
+            e.control.error_text = "Это поле не должно быть пустым"
+        elif not num.isdigit():
+            e.control.error_text = "Ввод должен быть числом"
+        else:
+            data["num"] = int(num)
+
+        page.update()
+
+    choice_number = ft.TextField(
+        label="Кол-во",
+        on_blur=change_number,
+        expand=True,
     )
 
     def back(page: ft.Page) -> None:
@@ -190,6 +211,7 @@ def edit_sells_page(page: ft.Page) -> ft.SafeArea:
                 clients,
                 date_ready_button,
                 choice_of_puzzles,
+                choice_number,
                 button,
             ],
         ),

@@ -93,7 +93,8 @@ class Puzzles:
 
         # `цена 1 мм выбранного вида древисины (задаётся в db/price_list.json)` *
         # `толщина, мм` * `index (задаётся в db/price_list.json)`
-        return data["tree"][tree_type] * int(width) * data["index"]
+        # округляем до копеек (2 символа после запятой)
+        return round(data["tree"][tree_type] * int(width) * data["index"], 2)
 
     def add(self, my_data: dict) -> None:
         """Добавляет пользователя в JSON базу данных."""
@@ -134,20 +135,31 @@ class Clients:
 class Sells:
     """Класс для взаимодействия с бд клиентов."""
 
-    def add(self, my_data: dict) -> None:
+    def add(self, new_data: dict) -> None:
         """Добавляет нового клиента."""
+        # Получаем данные о товаре
+        new_name = new_data["name"]
+        with Path.open(PUZZLES_DB_NAME, encoding="UTF-8") as f:
+            data = json.load(f)
+
+            for i in data:
+                if i["name"] == new_name:
+                    price = i["price"]
+                    new_data["price"] = price
+                    new_data["sum"] = price * new_data["num"]
+                    break
+
+        # Открываем и записываем изменения в файл
         with Path.open(SELLS_DB_NAME, "r+", encoding="UTF-8") as f:
             data = json.load(f)
 
-            my_data["time"] = get_time()
-
-            data.append(my_data)
+            data.append(new_data)
 
             f.seek(0)
             f.truncate()
             json.dump(data, f, indent=4, ensure_ascii=False)
 
-            logger.debug("Новый клиент! {}", my_data)
+            logger.debug("Новый заказ! {}", new_data)
 
     def get(self) -> list:
         """Возвращает список всех клиентов."""

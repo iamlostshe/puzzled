@@ -1,1 +1,20 @@
-[]
+[
+    {
+        "r_type": "Прайс-лист",
+        "r_format": "json",
+        "filename": "export/24_01_2025_23_54_00.json",
+        "time": "24-01-2025 23:54:00"
+    },
+    {
+        "r_type": "Клиенты",
+        "r_format": "txt",
+        "filename": "export/24_01_2025_23_54_06.txt",
+        "time": "24-01-2025 23:54:06"
+    },
+    {
+        "r_type": "Пазлы",
+        "r_format": "json",
+        "filename": "export/24_01_2025_23_54_13.json",
+        "time": "24-01-2025 23:54:13"
+    }
+]
