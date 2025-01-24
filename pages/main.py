@@ -212,7 +212,7 @@ def main_page(page: ft.Page) -> ft.SafeArea:
     def get_table(items: list) -> ft.Row | ft.DataTable:
         """Функция для создания таблицы."""
         # Если в бд нет ни одного товара
-        if len(items) == 0:
+        if not items:
             return ft.Row(
                 controls=[
                     ft.Text("У Вас пока нет ни одного шаблона пазла("),
@@ -265,7 +265,8 @@ def main_page(page: ft.Page) -> ft.SafeArea:
     def search_puzzles(e: ft.core.control_event.ControlEvent, page: ft.Page) -> None:
         """Поиск пазлов."""
         # Поиск по бд
-        db.Puzzles.search(e.control.value)
+        p = db.Puzzles()
+        items = p.search(e.control.value)
 
         # Обновлённая таблица
         table = get_table(items)  # noqa: F841

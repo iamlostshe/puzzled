@@ -10,11 +10,8 @@ MAIN_PAGE_INDEX = 0
 # Заказы
 SELLS_PAGE_INDEX = 1
 
-# Склад
-WAREHOUSE_PAGE_INDEX = 2
-
 # Отчёты
-REPORTS_PAGE_INDEX = 3
+REPORTS_PAGE_INDEX = 2
 
 
 def nav_bar(page: ft.Page, index: int | None = None) -> ft.NavigationBar:
@@ -37,11 +34,6 @@ def nav_bar(page: ft.Page, index: int | None = None) -> ft.NavigationBar:
                 selected_icon=ft.Icons.PEOPLE_OUTLINED,
             ),
             ft.NavigationBarDestination(
-                label="Склад",
-                icon=ft.Icons.WAREHOUSE,
-                selected_icon=ft.Icons.WAREHOUSE_OUTLINED,
-            ),
-            ft.NavigationBarDestination(
                 label="Отчеты",
                 icon=ft.Icons.DOCUMENT_SCANNER_ROUNDED,
                 selected_icon=ft.Icons.DOCUMENT_SCANNER_OUTLINED,
@@ -55,7 +47,6 @@ def nav_bar_on_change(e: ft.core.control_event.ControlEvent, page: ft.Page) -> N
     from pages.main import main_page
     from pages.reports import reports_page
     from pages.sells import sells_page
-    from pages.warehouse import warehouse_page
 
     # Определяем какая страница выбрана
     num = int(e.data)
@@ -73,10 +64,6 @@ def nav_bar_on_change(e: ft.core.control_event.ControlEvent, page: ft.Page) -> N
     # Заказы
     elif num == SELLS_PAGE_INDEX:
         page.add(sells_page(page))
-
-    # Склад
-    elif num == WAREHOUSE_PAGE_INDEX:
-        page.add(warehouse_page(page))
 
     # Отчёты
     elif num == REPORTS_PAGE_INDEX:

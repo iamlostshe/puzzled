@@ -4,6 +4,7 @@
 REPORT_DIR = "export"
 REPORT_SEP = "_"
 REPORT_NAME_TXT = "<data-time>"
+REPORT_NAME_PNG = "<data-time>"
 REPORT_NAME_JSON = "<data-time>"
 
 REPORT_DB_NAME = "db/reports.json"

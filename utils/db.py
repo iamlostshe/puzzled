@@ -15,10 +15,27 @@ from config import (
     REPORT_DB_NAME,
     REPORT_DIR,
     REPORT_NAME_JSON,
+    # REPORT_NAME_PNG,
     REPORT_NAME_TXT,
     REPORT_SEP,
     SELLS_DB_NAME,
 )
+
+
+def search(filename: str, search_key: str) -> list:
+    """Поиск по базе данных."""
+    with Path.open(filename, encoding="UTF-8") as f:
+        data = json.load(f)
+
+    logger.debug(data)
+
+    result = [i for i in data if search_key.lower() in " ".join(i).lower()]
+    logger.debug(result)
+
+    if not result:
+        result.append("По вашему запросу ничего не найдено(")
+
+    return result
 
 
 def get_time() -> str:
@@ -56,11 +73,15 @@ def check_db() -> None:
 class Puzzles:
     """Класс для работы с бд пазлов."""
 
+    def search(self, search_key: str) -> str:
+        """TODO: Недоделаный поиск."""
+        logger.debug(search(PUZZLES_DB_NAME, search_key))
+        return search(PUZZLES_DB_NAME, search_key)
+
     def get_price(
         self,
         tree_type: str,
         width: str | int,
-        num_details: str | int,
     ) -> float:
         """Получаем цену пазла."""
         # Открываем прайс-лист для получения цен
@@ -69,7 +90,10 @@ class Puzzles:
             data = json.load(f)
 
         # Считаем и возвращаем цену пазла
-        return (data["tree"][tree_type] + int(width) + int(num_details)) * data["index"]
+
+        # `цена 1 мм выбранного вида древисины (задаётся в db/price_list.json)` *
+        # `толщина, мм` * `index (задаётся в db/price_list.json)`
+        return data["tree"][tree_type] * int(width) * data["index"]
 
     def add(self, my_data: dict) -> None:
         """Добавляет пользователя в JSON базу данных."""
@@ -80,7 +104,6 @@ class Puzzles:
             my_data["price"] = self.get_price(
                 tree_type=my_data["tree_type"],
                 width=my_data["width"],
-                num_details=my_data["num_details"],
             )
 
             data.append(my_data)
@@ -137,25 +160,6 @@ class Sells:
 class Reports:
     """Класс для взаимодействия с бд отчётов."""
 
-    def json_to_txt(self, data: list) -> str:
-        """Перевод json в txt."""
-        # Инициализируем пустой список
-        result = []
-
-        for _a, b in enumerate(data):
-            if isinstance(b, dict):
-                # Инициализируем пустой список
-                pre_result = []
-
-                # Проходимся по словарю
-                for c in b:
-                    pre_result.append(f"{c} - {b[c]}")  # noqa: PERF401
-
-                # Добавляем результат в список
-                result.append("\n".join(pre_result))
-
-        return "\n\n---\n\n".join(result)
-
     def add(self, r_type: str, r_format: str) -> None:
         """Создание нового отчёта."""
         # Выбираем файл для отчёта
@@ -170,15 +174,17 @@ class Reports:
         with Path.open(r_filename, "r", encoding="UTF-8") as f:
             text = f.read()
 
-        # Переводим JSON в TXT если это необходимо
-        if r_format == "txt":
-            text = self.json_to_txt(text)
-
         # Переводим r_format в нижний регистр
         r_format = r_format.lower()
 
+        # TODO: Переводим JSON в TXT если это необходимо
+        # if r_format == "txt":
+        #     text = self.json_to_txt(text)
+        #     logger.debug(text)
+
         # Имя будующего файла
         filename = {
+            # "график": f"{REPORT_NAME_PNG}.png",
             "txt": f"{REPORT_NAME_TXT}.txt",
             "json": f"{REPORT_NAME_JSON}.json",
         }[r_format]
@@ -200,7 +206,14 @@ class Reports:
         with Path.open(REPORT_DB_NAME, "r+", encoding="UTF-8") as f:
             data = json.load(f)
 
-            data.append({"r_type": r_type, "r_format": r_format, "time": get_time()})
+            data.append(
+                {
+                    "r_type": r_type,
+                    "r_format": r_format,
+                    "filename": f"{REPORT_DIR}/{filename}",
+                    "time": get_time(),
+                },
+            )
 
             f.seek(0)
             f.truncate()

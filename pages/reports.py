@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import flet as ft
+from loguru import logger
 
 from pages.nav_bar import nav_bar
 from utils import db
@@ -10,18 +11,6 @@ from utils import db
 
 def edit_reports_page(page: ft.Page) -> ft.SafeArea:
     """Меню создания отчёта."""
-
-    def save_file(name: str) -> None:
-        """Функция для сохранения отчётов."""
-        r = db.Reports()
-        filename = r.add(name)
-
-        file_piker = ft.FilePicker()
-        file_piker.save_file(
-            dialog_title=f"Куда сохранить {filename}?",
-            file_name=filename,
-            file_type=ft.FilePickerFileType.CUSTOM,
-        )
 
     def choice_of_on_click(e: ft.core.control_event.ControlEvent) -> None:
         """Обработка выбора вида отчёта."""
@@ -77,7 +66,11 @@ def edit_reports_page(page: ft.Page) -> ft.SafeArea:
     choice_of_format = ft.Dropdown(
         label="Формат отчёта",
         on_change=choice_of_on_click,
-        options=[ft.dropdown.Option("JSON"), ft.dropdown.Option("TXT")],
+        options=[
+            # ft.dropdown.Option("График"),
+            ft.dropdown.Option("JSON"),
+            ft.dropdown.Option("TXT"),
+        ],
     )
 
     button = ft.CupertinoFilledButton(
@@ -153,7 +146,13 @@ def reports_page(page: ft.Page) -> ft.SafeArea:
         columns = []
 
         # Подписываем колонки
-        for column_name in ("№", "Вид отчёта", "Формат отчёта", "Дата и время"):
+        for column_name in (
+            "№",
+            "Вид отчёта",
+            "Формат отчёта",
+            "Имя файла",
+            "Дата и время",
+        ):
             columns.append(ft.DataColumn(ft.Text(column_name)))
 
         # Инициализируем пустой список для строк
